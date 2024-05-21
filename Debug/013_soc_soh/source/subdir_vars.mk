@@ -19,6 +19,7 @@ ASM_SRCS += \
 C_SRCS += \
 ../013_soc_soh/source/errata_SSWF021_45.c \
 ../013_soc_soh/source/esm.c \
+../013_soc_soh/source/gio.c \
 ../013_soc_soh/source/het.c \
 ../013_soc_soh/source/notification.c \
 ../013_soc_soh/source/os_croutine.c \
@@ -46,6 +47,7 @@ C_SRCS += \
 C_DEPS += \
 ./013_soc_soh/source/errata_SSWF021_45.d \
 ./013_soc_soh/source/esm.d \
+./013_soc_soh/source/gio.d \
 ./013_soc_soh/source/het.d \
 ./013_soc_soh/source/notification.d \
 ./013_soc_soh/source/os_croutine.d \
@@ -74,6 +76,7 @@ OBJS += \
 ./013_soc_soh/source/dabort.obj \
 ./013_soc_soh/source/errata_SSWF021_45.obj \
 ./013_soc_soh/source/esm.obj \
+./013_soc_soh/source/gio.obj \
 ./013_soc_soh/source/het.obj \
 ./013_soc_soh/source/notification.obj \
 ./013_soc_soh/source/os_croutine.obj \
@@ -115,6 +118,7 @@ OBJS__QUOTED += \
 "013_soc_soh\source\dabort.obj" \
 "013_soc_soh\source\errata_SSWF021_45.obj" \
 "013_soc_soh\source\esm.obj" \
+"013_soc_soh\source\gio.obj" \
 "013_soc_soh\source\het.obj" \
 "013_soc_soh\source\notification.obj" \
 "013_soc_soh\source\os_croutine.obj" \
@@ -147,6 +151,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "013_soc_soh\source\errata_SSWF021_45.d" \
 "013_soc_soh\source\esm.d" \
+"013_soc_soh\source\gio.d" \
 "013_soc_soh\source\het.d" \
 "013_soc_soh\source\notification.d" \
 "013_soc_soh\source\os_croutine.d" \
@@ -190,6 +195,7 @@ ASM_SRCS__QUOTED += \
 C_SRCS__QUOTED += \
 "../013_soc_soh/source/errata_SSWF021_45.c" \
 "../013_soc_soh/source/esm.c" \
+"../013_soc_soh/source/gio.c" \
 "../013_soc_soh/source/het.c" \
 "../013_soc_soh/source/notification.c" \
 "../013_soc_soh/source/os_croutine.c" \

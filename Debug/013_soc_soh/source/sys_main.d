@@ -14,11 +14,9 @@
 013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_stdint.h
 013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/sys/_stdint.h
 013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/Circular\ Buffer/circularBuff.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sci.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_sci.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_gio.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/orkaMain.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task10ms/task10ms.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/tasksHelper.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/FreeRTOS.h
 013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stddef.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/FreeRTOSConfig.h
@@ -28,8 +26,15 @@
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_mpu_wrappers.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_task.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_list.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/SOC\ SOH/soc/soc.h
-013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/SOC\ SOH/battery/molicel.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_queue.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/CircularBuffer/circularBuff.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sci.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_sci.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_gio.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/Sox/sox.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/gio.h
 
 ../013_soc_soh/source/sys_main.c:
 
@@ -59,15 +64,11 @@ C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/sys/_stdint.h:
 
 C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h:
 
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/Circular\ Buffer/circularBuff.h:
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/orkaMain.h:
 
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sci.h:
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task10ms/task10ms.h:
 
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_sci.h:
-
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_gio.h:
-
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h:
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/tasksHelper.h:
 
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/FreeRTOS.h:
 
@@ -87,7 +88,21 @@ C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/inclu
 
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_list.h:
 
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/SOC\ SOH/soc/soc.h:
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/os_queue.h:
 
-C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/Drivers/SOC\ SOH/battery/molicel.h:
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/CircularBuffer/circularBuff.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sci.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_sci.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_gio.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/Sox/sox.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/gio.h:
 

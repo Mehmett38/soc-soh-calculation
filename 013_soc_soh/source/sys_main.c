@@ -51,10 +51,7 @@
 
 /* USER CODE BEGIN (1) */
 
-#include "circularBuff.h"
-#include "FreeRTOS.h"
-#include "os_task.h"
-#include "soc.h"
+#include "orkaMain.h"
 
 /* USER CODE END */
 
@@ -68,62 +65,13 @@
 
 /* USER CODE BEGIN (2) */
 
-#define UNUSED(x)   ((void)x)
-uint8_t toggle = 1;
-uint8_t returnVarningClose;
-
-void delay(uint32_t time)
-{
-    time *= 11520;          //needed to wait 1ms delay
-    while(time--);
-}
-
-uint8_t rxData;
-float socCurrent;
-
-TaskHandle_t task_10ms;             //!< 10ms task handler
-TaskHandle_t task_100ms;            //!< 100ms task handler
-
-void OsTask_10ms(void * param);
-void OsTask_100ms(void * param);
-
-uint32_t itNumber;
-uint32_t packetNumber;
-uint32_t processNumber;
-
-uint32_t taskProcessNum;
 /* USER CODE END */
 
 int main(void)
 {
 /* USER CODE BEGIN (3) */
-//    ltcInit(spiREG3);
 
-    sciInit();
-    AE_socInitialize();
-
-    _enable_interrupt_();
-    sciEnableNotification(scilinREG, SCI_RX_INT);
-
-    sciReceive(scilinREG, 1, &rxData);
-
-    BaseType_t status;
-    //!< 10ms task
-    status = xTaskCreate(OsTask_10ms, "task_10ms", (configMINIMAL_STACK_SIZE * 3),
-                         NULL, 2, &task_10ms);
-    if(status != pdPASS)
-    {
-        vTaskDelete(task_10ms);
-    }
-    //!< 100ms task
-    status = xTaskCreate(OsTask_100ms, "task_100ms", (configMINIMAL_STACK_SIZE * 3),
-                         NULL, 2, &task_100ms);
-    if(status != pdPASS)
-    {
-        vTaskDelete(task_100ms);
-    }
-
-    vTaskStartScheduler();
+   return AE_orkaMain();
 
 /* USER CODE END */
 
@@ -132,50 +80,4 @@ int main(void)
 
 /* USER CODE BEGIN (4) */
 
-void OsTask_10ms(void * param)
-{
-    for(;;)
-    {
-        if(crcBuffer.dataFlag)
-        {
-            AE_calculateSoc();
-            crcBuffer.dataFlag = 0;
-//            taskProcessNum++;
-        }
-        vTaskDelay(10);
-    }
-}
-
-void OsTask_100ms(void * param)
-{
-    for(;;)
-    {
-        vTaskDelay(100);
-    }
-}
-
-void sciNotification(sciBASE_t *sci, uint32 flags)
-{
-    if(sci == scilinREG && flags == SCI_RX_INT)
-    {
-        itNumber++;
-        sciReceive(scilinREG, 1, &rxData);
-        crcBuffer.buffer[crcBuffer.head++] = rxData;
-        crcBuffer.head %= BUFFER_LEN;
-
-        if(rxData == '\n')
-        {
-            packetNumber++;
-            processNumber++;
-
-            if(crcBuffer.buffer[(crcBuffer.tail + 4) % BUFFER_LEN] != '\r')
-            {
-                processNumber--;
-                return;
-            }
-
-            AE_circularBufferParse();
-        }
-    }
-}
 /* USER CODE END */

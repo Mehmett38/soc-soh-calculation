@@ -13,6 +13,7 @@ ORDERED_OBJS += \
 "./013_soc_soh/source/dabort.obj" \
 "./013_soc_soh/source/errata_SSWF021_45.obj" \
 "./013_soc_soh/source/esm.obj" \
+"./013_soc_soh/source/gio.obj" \
 "./013_soc_soh/source/het.obj" \
 "./013_soc_soh/source/notification.obj" \
 "./013_soc_soh/source/os_croutine.obj" \
@@ -41,11 +42,12 @@ ORDERED_OBJS += \
 "./013_soc_soh/source/sys_startup.obj" \
 "./013_soc_soh/source/sys_vim.obj" \
 "./013_soc_soh/source/system.obj" \
-"./Drivers/Circular Buffer/circularBuffer.obj" \
-"./Drivers/SOC SOH/soc/soc.obj" \
-"./Drivers/ltc681x/crc/crc15.obj" \
-"./Drivers/ltc681x/ltc/ltc6812.obj" \
-"./Drivers/ltc681x/temperature/temperature.obj" \
+"./ORKA/System/Notification.obj" \
+"./ORKA/System/orkaMain.obj" \
+"./ORKA/System/Tasks/Task100ms/task100ms.obj" \
+"./ORKA/System/Tasks/Task10ms/task10ms.obj" \
+"./ORKA/UserDefinedApis/CircularBuffer/circularBuffer.obj" \
+"./ORKA/UserDefinedApis/Sox/sox.obj" \
 "../013_soc_soh/source/sys_link.cmd" \
 $(GEN_CMDS__FLAG) \
 -lrtsv7R4_T_be_v3D16_eabi.lib \
@@ -58,17 +60,17 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include 013_soc_soh/source/subdir_vars.mk
--include Drivers/Circular\ Buffer/subdir_vars.mk
--include Drivers/SOC\ SOH/soc/subdir_vars.mk
--include Drivers/ltc681x/crc/subdir_vars.mk
--include Drivers/ltc681x/ltc/subdir_vars.mk
--include Drivers/ltc681x/temperature/subdir_vars.mk
+-include ORKA/System/subdir_vars.mk
+-include ORKA/System/Tasks/Task100ms/subdir_vars.mk
+-include ORKA/System/Tasks/Task10ms/subdir_vars.mk
+-include ORKA/UserDefinedApis/CircularBuffer/subdir_vars.mk
+-include ORKA/UserDefinedApis/Sox/subdir_vars.mk
 -include 013_soc_soh/source/subdir_rules.mk
--include Drivers/Circular\ Buffer/subdir_rules.mk
--include Drivers/SOC\ SOH/soc/subdir_rules.mk
--include Drivers/ltc681x/crc/subdir_rules.mk
--include Drivers/ltc681x/ltc/subdir_rules.mk
--include Drivers/ltc681x/temperature/subdir_rules.mk
+-include ORKA/System/subdir_rules.mk
+-include ORKA/System/Tasks/Task100ms/subdir_rules.mk
+-include ORKA/System/Tasks/Task10ms/subdir_rules.mk
+-include ORKA/UserDefinedApis/CircularBuffer/subdir_rules.mk
+-include ORKA/UserDefinedApis/Sox/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -185,7 +187,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 013_soc_soh.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl" -mv7R4 --code_state=32 --float_support=VFPv3D16 -g --diag_warning=225 --diag_wrap=off --display_error_number --enum_type=packed --abi=eabi -z -m"013_soc_soh.map" --heap_size=0x800 --stack_size=0x800 -i"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/lib" -i"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="013_soc_soh_linkInfo.xml" --rom_model --be32 -o "013_soc_soh.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl" -mv7R4 --code_state=32 --float_support=VFPv3D16 -g --c99 --diag_warning=225 --diag_wrap=off --display_error_number --enum_type=packed --abi=eabi -z -m"013_soc_soh.map" --heap_size=0x800 --stack_size=0x800 -i"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/lib" -i"C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="013_soc_soh_linkInfo.xml" --rom_model --be32 -o "013_soc_soh.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
@@ -199,9 +201,10 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "013_soc_soh\source\dabort.obj" "013_soc_soh\source\errata_SSWF021_45.obj" "013_soc_soh\source\esm.obj" "013_soc_soh\source\het.obj" "013_soc_soh\source\notification.obj" "013_soc_soh\source\os_croutine.obj" "013_soc_soh\source\os_event_groups.obj" "013_soc_soh\source\os_heap.obj" "013_soc_soh\source\os_list.obj" "013_soc_soh\source\os_mpu_wrappers.obj" "013_soc_soh\source\os_port.obj" "013_soc_soh\source\os_portasm.obj" "013_soc_soh\source\os_queue.obj" "013_soc_soh\source\os_tasks.obj" "013_soc_soh\source\os_timer.obj" "013_soc_soh\source\pinmux.obj" "013_soc_soh\source\sci.obj" "013_soc_soh\source\spi.obj" "013_soc_soh\source\sys_core.obj" "013_soc_soh\source\sys_dma.obj" "013_soc_soh\source\sys_intvecs.obj" "013_soc_soh\source\sys_main.obj" "013_soc_soh\source\sys_mpu.obj" "013_soc_soh\source\sys_pcr.obj" "013_soc_soh\source\sys_phantom.obj" "013_soc_soh\source\sys_pmm.obj" "013_soc_soh\source\sys_pmu.obj" "013_soc_soh\source\sys_selftest.obj" "013_soc_soh\source\sys_startup.obj" "013_soc_soh\source\sys_vim.obj" 
-	-$(RM) "013_soc_soh\source\system.obj" "Drivers\Circular Buffer\circularBuffer.obj" "Drivers\SOC SOH\soc\soc.obj" "Drivers\ltc681x\crc\crc15.obj" "Drivers\ltc681x\ltc\ltc6812.obj" "Drivers\ltc681x\temperature\temperature.obj" 
-	-$(RM) "013_soc_soh\source\errata_SSWF021_45.d" "013_soc_soh\source\esm.d" "013_soc_soh\source\het.d" "013_soc_soh\source\notification.d" "013_soc_soh\source\os_croutine.d" "013_soc_soh\source\os_event_groups.d" "013_soc_soh\source\os_heap.d" "013_soc_soh\source\os_list.d" "013_soc_soh\source\os_mpu_wrappers.d" "013_soc_soh\source\os_port.d" "013_soc_soh\source\os_queue.d" "013_soc_soh\source\os_tasks.d" "013_soc_soh\source\os_timer.d" "013_soc_soh\source\pinmux.d" "013_soc_soh\source\sci.d" "013_soc_soh\source\spi.d" "013_soc_soh\source\sys_dma.d" "013_soc_soh\source\sys_main.d" "013_soc_soh\source\sys_pcr.d" "013_soc_soh\source\sys_phantom.d" "013_soc_soh\source\sys_pmm.d" "013_soc_soh\source\sys_selftest.d" "013_soc_soh\source\sys_startup.d" "013_soc_soh\source\sys_vim.d" "013_soc_soh\source\system.d" "Drivers\Circular Buffer\circularBuffer.d" "Drivers\SOC SOH\soc\soc.d" "Drivers\ltc681x\crc\crc15.d" "Drivers\ltc681x\ltc\ltc6812.d" "Drivers\ltc681x\temperature\temperature.d" 
+	-$(RM) "013_soc_soh\source\dabort.obj" "013_soc_soh\source\errata_SSWF021_45.obj" "013_soc_soh\source\esm.obj" "013_soc_soh\source\gio.obj" "013_soc_soh\source\het.obj" "013_soc_soh\source\notification.obj" "013_soc_soh\source\os_croutine.obj" "013_soc_soh\source\os_event_groups.obj" "013_soc_soh\source\os_heap.obj" "013_soc_soh\source\os_list.obj" "013_soc_soh\source\os_mpu_wrappers.obj" "013_soc_soh\source\os_port.obj" "013_soc_soh\source\os_portasm.obj" "013_soc_soh\source\os_queue.obj" "013_soc_soh\source\os_tasks.obj" "013_soc_soh\source\os_timer.obj" "013_soc_soh\source\pinmux.obj" "013_soc_soh\source\sci.obj" "013_soc_soh\source\spi.obj" "013_soc_soh\source\sys_core.obj" "013_soc_soh\source\sys_dma.obj" "013_soc_soh\source\sys_intvecs.obj" "013_soc_soh\source\sys_main.obj" "013_soc_soh\source\sys_mpu.obj" "013_soc_soh\source\sys_pcr.obj" "013_soc_soh\source\sys_phantom.obj" "013_soc_soh\source\sys_pmm.obj" "013_soc_soh\source\sys_pmu.obj" "013_soc_soh\source\sys_selftest.obj" "013_soc_soh\source\sys_startup.obj" 
+	-$(RM) "013_soc_soh\source\sys_vim.obj" "013_soc_soh\source\system.obj" "ORKA\System\Notification.obj" "ORKA\System\orkaMain.obj" "ORKA\System\Tasks\Task100ms\task100ms.obj" "ORKA\System\Tasks\Task10ms\task10ms.obj" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.obj" "ORKA\UserDefinedApis\Sox\sox.obj" 
+	-$(RM) "013_soc_soh\source\errata_SSWF021_45.d" "013_soc_soh\source\esm.d" "013_soc_soh\source\gio.d" "013_soc_soh\source\het.d" "013_soc_soh\source\notification.d" "013_soc_soh\source\os_croutine.d" "013_soc_soh\source\os_event_groups.d" "013_soc_soh\source\os_heap.d" "013_soc_soh\source\os_list.d" "013_soc_soh\source\os_mpu_wrappers.d" "013_soc_soh\source\os_port.d" "013_soc_soh\source\os_queue.d" "013_soc_soh\source\os_tasks.d" "013_soc_soh\source\os_timer.d" "013_soc_soh\source\pinmux.d" "013_soc_soh\source\sci.d" "013_soc_soh\source\spi.d" "013_soc_soh\source\sys_dma.d" "013_soc_soh\source\sys_main.d" "013_soc_soh\source\sys_pcr.d" "013_soc_soh\source\sys_phantom.d" "013_soc_soh\source\sys_pmm.d" "013_soc_soh\source\sys_selftest.d" "013_soc_soh\source\sys_startup.d" "013_soc_soh\source\sys_vim.d" "013_soc_soh\source\system.d" "ORKA\System\Notification.d" "ORKA\System\orkaMain.d" "ORKA\System\Tasks\Task100ms\task100ms.d" "ORKA\System\Tasks\Task10ms\task10ms.d" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.d" 
+	-$(RM) "ORKA\UserDefinedApis\Sox\sox.d" 
 	-$(RM) "013_soc_soh\source\dabort.d" "013_soc_soh\source\os_portasm.d" "013_soc_soh\source\sys_core.d" "013_soc_soh\source\sys_intvecs.d" "013_soc_soh\source\sys_mpu.d" "013_soc_soh\source\sys_pmu.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

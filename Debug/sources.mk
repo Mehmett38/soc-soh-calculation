@@ -112,9 +112,9 @@ PDE_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 013_soc_soh/source \
-Drivers/Circular\ Buffer \
-Drivers/SOC\ SOH/soc \
-Drivers/ltc681x/crc \
-Drivers/ltc681x/ltc \
-Drivers/ltc681x/temperature \
+ORKA/System \
+ORKA/System/Tasks/Task100ms \
+ORKA/System/Tasks/Task10ms \
+ORKA/UserDefinedApis/CircularBuffer \
+ORKA/UserDefinedApis/Sox \
 
