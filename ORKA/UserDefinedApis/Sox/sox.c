@@ -68,16 +68,20 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
             {
                 batSox->batStates = BAT_LOWER_DOD_POINT;
             }
+            break;
         }
         case BAT_UPPER_DOD_POINT:       //enter only one times
         {
             batSox->soc = 100.0f;
+            batSox->batInstantaneousCapacity = soxInitVals.batDodCapacity;
             batSox->batStates = BAT_INITIALIZED;
+            break;
         }
         case BAT_LOWER_DOD_POINT:       //enter only one times
         {
             batSox->soc = 0.0f;
             batSox->batStates = BAT_INITIALIZED;
+            break;
         }
         case BAT_INITIALIZED:
         {
@@ -85,25 +89,48 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
             {
                 batSox->batStates = BAT_IDLE_MODE;
             }
+            else if(passingCurrent > 0)
+            {
+                batSox->batStates = BAT_CHARGING_MODE;
+            }
             else
             {
-                (passingCurrent >= 0) ? BAT_CHARGING_MODE : BAT_DISCHARGING_MODE
+                batSox->batStates = BAT_DISCHARGING_MODE;
             }
-        }
-        case BAT_IDLE_MODE:
-        {
 
-            break;
-        }
-        case BAT_CHARGING_MODE:
-        {
-            batSox->soc += passingCurrent;
-            batSox->cycle += passingCurrent /
-            break;
-        }
-        case BAT_DISCHARGING_MODE:
-        {
+            switch(batSox->batStates)
+            {
+                case BAT_IDLE_MODE:
+                {
+                    MolicelTable_ts moliTab = AE_molicelFindByVoltage(meanCellVolt, MOLICEL_TABLE_IDLE);
 
+                    uint16_t dodRatio = 100 - soxInitVals.cellLowerDocRatio - soxInitVals.cellUpperDocRatio;
+                    float systemInitialCap = moliTab.capacity * dodRatio / 100.0f;
+
+                    batSox->soh = batSox->batInstantaneousCapacity / systemInitialCap;
+
+                    batSox->batStates = BAT_INITIALIZED;
+                    break;
+                }
+                case BAT_CHARGING_MODE:
+                {
+                    batSox->batInstantaneousCapacity += passingCurrent;
+                    batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
+                    batSox->cycle += (passingCurrent / soxInitVals.batDodCapacity) / 2;
+
+                    batSox->batStates = BAT_INITIALIZED;
+                    break;
+                }
+                case BAT_DISCHARGING_MODE:
+                {
+                    batSox->batInstantaneousCapacity += passingCurrent;
+                    batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
+                    batSox->cycle -= (passingCurrent / soxInitVals.batDodCapacity) / 2;
+
+                    batSox->batStates = BAT_INITIALIZED;
+                    break;
+                }
+            }
         }
     }
 }

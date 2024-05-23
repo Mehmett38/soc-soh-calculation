@@ -126,7 +126,7 @@ extern const MolicelTable_ts molicelChargeTable[MOLICEL_TABLE_SIZE] =
      {135, 2.9637f, 30.287f},
      {90, 2.8736f, 31.069f},
      {45, 2.7716f, 31.805f},
-     {0, 2.6567f, 32.481f}
+     {1, 2.6567f, 32.481f}
 };
 
 extern const MolicelTable_ts moliceDischargeTable[MOLICEL_TABLE_SIZE] =
@@ -231,7 +231,7 @@ extern const MolicelTable_ts moliceDischargeTable[MOLICEL_TABLE_SIZE] =
      {135, 2.7583f, 32.287f},
      {90, 2.6874f, 33.406f},
      {45, 2.6097f, 34.524f},
-     {0, 2.5246f, 35.6340f}
+     {1, 2.5246f, 35.6340f}
 };
 
 /**

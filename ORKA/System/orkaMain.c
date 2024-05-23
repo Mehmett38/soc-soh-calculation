@@ -54,6 +54,7 @@ static void orkaHarwareInit()
     _enable_interrupt_();
 
     sciReceive(scilinREG, 1, &rxData);
+    crcBuffer.rxVoltage = 3.5f;     //dumy variable
 }
 
 /**
@@ -64,10 +65,10 @@ static void orkaSoxInit()
     SoxInitTypeDef_ts soxInit = {0};
 
     soxInit.cellCapacityInmAh       = 4500u;
-    soxInit.numberOfParallelCell    = 6u;
+    soxInit.numberOfParallelCell    = 1u;
     soxInit.numberOfLifeCycle       = 600u;         //             __________________________________
-    soxInit.cellLowerDocRatio       = 5u;           //system DOD  | Lower | System Operation | Upper |
-    soxInit.cellUpperDocRatio       = 5u;           //            |__DOC__|______DOD_________|__DOC__|
+    soxInit.cellLowerDocRatio       = 0u;           //system DOD  | Lower | System Operation | Upper |
+    soxInit.cellUpperDocRatio       = 0u;           //            |__DOC__|______DOD_________|__DOC__|
 
     AE_soxInit(&soxInit);
 }

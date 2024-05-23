@@ -15,13 +15,19 @@ void AE_task10ms(void * param)
 {
     for(;;)
     {
-        if(crcBuffer.dataFlag)
+        if(crcBuffer.dataFlag != 0)
         {
-            AE_soxCalculate_UML(&batSox, crcBuffer.rxCurrent, crcBuffer.rxVoltage);
             crcBuffer.dataFlag = 0;
-
-            counterOf10msTask++;
         }
+        else
+        {
+            crcBuffer.rxCurrent = 0;
+        }
+
+        AE_soxCalculate_UML(&batSox, crcBuffer.rxCurrent, crcBuffer.rxVoltage);
+
+        counterOf10msTask++;
+
         vTaskDelay(10);
     }
 }
