@@ -115,6 +115,7 @@ SUBDIRS := \
 ORKA/System \
 ORKA/System/Tasks/Task100ms \
 ORKA/System/Tasks/Task10ms \
+ORKA/UserDefinedApis/CellLookUpTable \
 ORKA/UserDefinedApis/CircularBuffer \
 ORKA/UserDefinedApis/Sox \
 

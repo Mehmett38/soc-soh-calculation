@@ -5,8 +5,8 @@
  *      Author: mehmet.dincer
  */
 
+#include <CellLookUpTable/cellLookupTable.h>
 #include "sox.h"
-#include "MolicelLookUpTable/molicel.h"
 
 BatSoxVal_ts batSox;
 
@@ -31,19 +31,20 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
     uint16_t numberOfParallelCell  = soxInitVals.numberOfParallelCell;
     uint16_t dod = 100 - soxInitVals.cellLowerDocRatio - soxInitVals.cellUpperDocRatio;
 
-    soxInitVals.batTotatlCapacity = cellCapacityInmAh * numberOfParallelCell;
-    soxInitVals.batDodCapacity    = cellCapacityInmAh * numberOfParallelCell * dod / 100.0f;
+    soxInitVals.batTotatlCapacity = cellCapacityInmAh * numberOfParallelCell * (batSox.soh / 100.0f);
+    soxInitVals.batDodCapacity    = soxInitVals.batTotatlCapacity * (dod / 100.0f);
 
     //calculate the minimum and maximum voltage according to dod
-    float batCapacity = (soxInit->cellCapacityInmAh * batSox.soh / 100.0f);
+    float batCapacity = soxInitVals.batTotatlCapacity;
     uint32_t dodLowerCapacity = (batCapacity * soxInitVals.cellLowerDocRatio) / 100.0f;
     uint32_t dodUpperCapacity = (batCapacity * (100 - soxInitVals.cellUpperDocRatio)) / 100.0f;
 
-    MolicelTable_ts moliTab = {0};
-    moliTab = AE_molicelFindByCapacity(dodLowerCapacity, MOLICEL_TABLE_IDLE);
+    //calculate the min and max voltage according to DOD
+    CellTable_ts moliTab = {0};
+    moliTab = AE_tableFindByCapacity(dodLowerCapacity, CELL_TABLE_DISCHARGING);
     soxInitVals.minDischargeVoltage = moliTab.voltage;
 
-    moliTab = AE_molicelFindByCapacity(dodUpperCapacity, MOLICEL_TABLE_IDLE);
+    moliTab = AE_tableFindByCapacity(dodUpperCapacity, CELL_TABLE_CHARGING);
     soxInitVals.maxChargeVoltage = moliTab.voltage;
 }
 
@@ -68,6 +69,10 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
             {
                 batSox->batStates = BAT_LOWER_DOD_POINT;
             }
+
+            /*TODO For the simulation test code can be delated in LTC6812 code version*/
+            batSox->previousCapacity = batSox->batInstantaneousCapacity;
+
             break;
         }
         case BAT_UPPER_DOD_POINT:       //enter only one times
@@ -80,6 +85,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
         case BAT_LOWER_DOD_POINT:       //enter only one times
         {
             batSox->soc = 0.0f;
+            batSox->batInstantaneousCapacity = 0;
             batSox->batStates = BAT_INITIALIZED;
             break;
         }
@@ -87,32 +93,47 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
         {
             if(passingCurrent == 0)
             {
-                batSox->batStates = BAT_IDLE_MODE;
+                batSox->sumOfCapacityChange += ABSOLUTE(batSox->previousCapacity - batSox->batInstantaneousCapacity);
+                batSox->previousCapacity = batSox->batInstantaneousCapacity;
+
+                if(batSox->sumOfCapacityChange > SOH_CALCULATE_PERIOD)       //if total voltage change is > 1V recalculate soh
+                {
+                    batSox->sumOfCapacityChange = 0.0f;
+                    batSox->batStates = BAT_IDLE_MODE;
+                }
             }
             else if(passingCurrent > 0)
             {
                 batSox->batStates = BAT_CHARGING_MODE;
             }
-            else
+            else if(passingCurrent < 0)
             {
                 batSox->batStates = BAT_DISCHARGING_MODE;
+            }
+            else
+            {
+                batSox->batStates = BAT_NO_OPERATION;
             }
 
             switch(batSox->batStates)
             {
-                case BAT_IDLE_MODE:
+                case BAT_NO_OPERATION:
                 {
-                    MolicelTable_ts moliTab = AE_molicelFindByVoltage(meanCellVolt, MOLICEL_TABLE_IDLE);
+                    break;
+                }
+                case BAT_IDLE_MODE:             //calculate SOH
+                {
+                    CellTable_ts moliTab = AE_tableFindByVoltage(meanCellVolt, CELL_TABLE_IDLE);
 
                     uint16_t dodRatio = 100 - soxInitVals.cellLowerDocRatio - soxInitVals.cellUpperDocRatio;
                     float systemInitialCap = moliTab.capacity * dodRatio / 100.0f;
 
-                    batSox->soh = batSox->batInstantaneousCapacity / systemInitialCap;
+                    batSox->soh = (batSox->batInstantaneousCapacity / systemInitialCap) * 100.0f;
 
                     batSox->batStates = BAT_INITIALIZED;
                     break;
                 }
-                case BAT_CHARGING_MODE:
+                case BAT_CHARGING_MODE:         //calculate SOC and Cycle number
                 {
                     batSox->batInstantaneousCapacity += passingCurrent;
                     batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
@@ -121,7 +142,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
                     batSox->batStates = BAT_INITIALIZED;
                     break;
                 }
-                case BAT_DISCHARGING_MODE:
+                case BAT_DISCHARGING_MODE:      //calculate SOC and Cycle number
                 {
                     batSox->batInstantaneousCapacity += passingCurrent;
                     batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
@@ -145,7 +166,8 @@ static BatSoxVal_ts AE_readBatSoxDatasFromEeprom(void)
          .batStates = BAT_NOT_INITIALIZED,
          .cycle = 0.0f,
          .soc = 0.0f,
-         .soh = 100.0f
+         .soh = 100.0f,
+         .sumOfCapacityChange = 0,
     };
 
     return batSoxEeprom;

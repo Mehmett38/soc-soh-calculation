@@ -14,6 +14,7 @@
 #include "sox.h"
 #include "gio.h"
 #include "sci.h"
+#include "tasksHelper.h"
 
 
 int AE_orkaMain();

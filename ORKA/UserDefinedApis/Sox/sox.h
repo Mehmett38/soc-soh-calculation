@@ -10,6 +10,8 @@
 
 #include "stdint.h"
 
+#define ABSOLUTE(x)                     (((x) < 0)? -(x) : (x))
+#define SOH_CALCULATE_PERIOD            (1000)      //if total capacity differense is bigger than 1000mA calculate SOH
 
 typedef enum BatState_e{
     BAT_NOT_INITIALIZED,
@@ -18,7 +20,8 @@ typedef enum BatState_e{
     BAT_LOWER_DOD_POINT,
     BAT_CHARGING_MODE,
     BAT_DISCHARGING_MODE,
-    BAT_IDLE_MODE
+    BAT_IDLE_MODE,
+    BAT_NO_OPERATION
 }BatState_te;
 
 /**
@@ -44,6 +47,8 @@ typedef struct BatSoxVal_s{
     float soh;                              //ratio beetween 0-100
     float cycle;
     float batInstantaneousCapacity;
+    float previousCapacity;                  //
+    float sumOfCapacityChange;              //sum the changes changes ratio to calculate soh
     BatState_te batStates;
 }BatSoxVal_ts;
 

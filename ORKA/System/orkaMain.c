@@ -21,13 +21,21 @@ int AE_orkaMain()
 
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<-Task Creation->>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //!< 10ms task
-    status = xTaskCreate(AE_task10ms, "task_10ms", (configMINIMAL_STACK_SIZE * 3),
-                         NULL, 2, &task_10ms);
+    status = xTaskCreate(AE_task10ms,
+                         "task_10ms",
+                         (configMINIMAL_STACK_SIZE * 3),
+                         NULL,
+                         TASK_HIGh_PRIORITY,
+                         &task_10ms);
     configASSERT(status);
 
     //!< 100ms task
-    status = xTaskCreate(AE_task100ms, "task_100ms", (configMINIMAL_STACK_SIZE * 3),
-                         NULL, 2, &task_100ms);
+    status = xTaskCreate(AE_task100ms,
+                         "task_100ms",
+                         (configMINIMAL_STACK_SIZE * 3),
+                         NULL,
+                         TASK_MIDDLE_PRIORITY,
+                         &task_100ms);
     configASSERT(status);
 
     vTaskStartScheduler();

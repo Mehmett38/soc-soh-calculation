@@ -14,6 +14,15 @@
 #include "circularBuff.h"
 #include "sox.h"
 
+typedef enum RtosPriorities_e
+{
+    TASK_IDLE,
+    TASK_LOW_PRIOTIY,
+    TASK_MIDDLE_PRIORITY,
+    TASK_HIGh_PRIORITY,
+    TASK_REAL_TIME
+}RtosPriorities_te;
+
 extern BatSoxVal_ts batSox;
 
 #endif /* ORKA_SYSTEM_TASKS_TASKSHELPER_H_ */

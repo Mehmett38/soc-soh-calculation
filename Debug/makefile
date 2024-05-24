@@ -46,6 +46,8 @@ ORDERED_OBJS += \
 "./ORKA/System/orkaMain.obj" \
 "./ORKA/System/Tasks/Task100ms/task100ms.obj" \
 "./ORKA/System/Tasks/Task10ms/task10ms.obj" \
+"./ORKA/UserDefinedApis/CellLookUpTable/cellLookupTable.obj" \
+"./ORKA/UserDefinedApis/CellLookUpTable/cells.obj" \
 "./ORKA/UserDefinedApis/CircularBuffer/circularBuffer.obj" \
 "./ORKA/UserDefinedApis/Sox/sox.obj" \
 "../013_soc_soh/source/sys_link.cmd" \
@@ -63,12 +65,14 @@ RMDIR := RMDIR /S/Q
 -include ORKA/System/subdir_vars.mk
 -include ORKA/System/Tasks/Task100ms/subdir_vars.mk
 -include ORKA/System/Tasks/Task10ms/subdir_vars.mk
+-include ORKA/UserDefinedApis/CellLookUpTable/subdir_vars.mk
 -include ORKA/UserDefinedApis/CircularBuffer/subdir_vars.mk
 -include ORKA/UserDefinedApis/Sox/subdir_vars.mk
 -include 013_soc_soh/source/subdir_rules.mk
 -include ORKA/System/subdir_rules.mk
 -include ORKA/System/Tasks/Task100ms/subdir_rules.mk
 -include ORKA/System/Tasks/Task10ms/subdir_rules.mk
+-include ORKA/UserDefinedApis/CellLookUpTable/subdir_rules.mk
 -include ORKA/UserDefinedApis/CircularBuffer/subdir_rules.mk
 -include ORKA/UserDefinedApis/Sox/subdir_rules.mk
 -include objects.mk
@@ -202,9 +206,9 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
 	-$(RM) "013_soc_soh\source\dabort.obj" "013_soc_soh\source\errata_SSWF021_45.obj" "013_soc_soh\source\esm.obj" "013_soc_soh\source\gio.obj" "013_soc_soh\source\het.obj" "013_soc_soh\source\notification.obj" "013_soc_soh\source\os_croutine.obj" "013_soc_soh\source\os_event_groups.obj" "013_soc_soh\source\os_heap.obj" "013_soc_soh\source\os_list.obj" "013_soc_soh\source\os_mpu_wrappers.obj" "013_soc_soh\source\os_port.obj" "013_soc_soh\source\os_portasm.obj" "013_soc_soh\source\os_queue.obj" "013_soc_soh\source\os_tasks.obj" "013_soc_soh\source\os_timer.obj" "013_soc_soh\source\pinmux.obj" "013_soc_soh\source\sci.obj" "013_soc_soh\source\spi.obj" "013_soc_soh\source\sys_core.obj" "013_soc_soh\source\sys_dma.obj" "013_soc_soh\source\sys_intvecs.obj" "013_soc_soh\source\sys_main.obj" "013_soc_soh\source\sys_mpu.obj" "013_soc_soh\source\sys_pcr.obj" "013_soc_soh\source\sys_phantom.obj" "013_soc_soh\source\sys_pmm.obj" "013_soc_soh\source\sys_pmu.obj" "013_soc_soh\source\sys_selftest.obj" "013_soc_soh\source\sys_startup.obj" 
-	-$(RM) "013_soc_soh\source\sys_vim.obj" "013_soc_soh\source\system.obj" "ORKA\System\Notification.obj" "ORKA\System\orkaMain.obj" "ORKA\System\Tasks\Task100ms\task100ms.obj" "ORKA\System\Tasks\Task10ms\task10ms.obj" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.obj" "ORKA\UserDefinedApis\Sox\sox.obj" 
-	-$(RM) "013_soc_soh\source\errata_SSWF021_45.d" "013_soc_soh\source\esm.d" "013_soc_soh\source\gio.d" "013_soc_soh\source\het.d" "013_soc_soh\source\notification.d" "013_soc_soh\source\os_croutine.d" "013_soc_soh\source\os_event_groups.d" "013_soc_soh\source\os_heap.d" "013_soc_soh\source\os_list.d" "013_soc_soh\source\os_mpu_wrappers.d" "013_soc_soh\source\os_port.d" "013_soc_soh\source\os_queue.d" "013_soc_soh\source\os_tasks.d" "013_soc_soh\source\os_timer.d" "013_soc_soh\source\pinmux.d" "013_soc_soh\source\sci.d" "013_soc_soh\source\spi.d" "013_soc_soh\source\sys_dma.d" "013_soc_soh\source\sys_main.d" "013_soc_soh\source\sys_pcr.d" "013_soc_soh\source\sys_phantom.d" "013_soc_soh\source\sys_pmm.d" "013_soc_soh\source\sys_selftest.d" "013_soc_soh\source\sys_startup.d" "013_soc_soh\source\sys_vim.d" "013_soc_soh\source\system.d" "ORKA\System\Notification.d" "ORKA\System\orkaMain.d" "ORKA\System\Tasks\Task100ms\task100ms.d" "ORKA\System\Tasks\Task10ms\task10ms.d" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.d" 
-	-$(RM) "ORKA\UserDefinedApis\Sox\sox.d" 
+	-$(RM) "013_soc_soh\source\sys_vim.obj" "013_soc_soh\source\system.obj" "ORKA\System\Notification.obj" "ORKA\System\orkaMain.obj" "ORKA\System\Tasks\Task100ms\task100ms.obj" "ORKA\System\Tasks\Task10ms\task10ms.obj" "ORKA\UserDefinedApis\CellLookUpTable\cellLookupTable.obj" "ORKA\UserDefinedApis\CellLookUpTable\cells.obj" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.obj" "ORKA\UserDefinedApis\Sox\sox.obj" 
+	-$(RM) "013_soc_soh\source\errata_SSWF021_45.d" "013_soc_soh\source\esm.d" "013_soc_soh\source\gio.d" "013_soc_soh\source\het.d" "013_soc_soh\source\notification.d" "013_soc_soh\source\os_croutine.d" "013_soc_soh\source\os_event_groups.d" "013_soc_soh\source\os_heap.d" "013_soc_soh\source\os_list.d" "013_soc_soh\source\os_mpu_wrappers.d" "013_soc_soh\source\os_port.d" "013_soc_soh\source\os_queue.d" "013_soc_soh\source\os_tasks.d" "013_soc_soh\source\os_timer.d" "013_soc_soh\source\pinmux.d" "013_soc_soh\source\sci.d" "013_soc_soh\source\spi.d" "013_soc_soh\source\sys_dma.d" "013_soc_soh\source\sys_main.d" "013_soc_soh\source\sys_pcr.d" "013_soc_soh\source\sys_phantom.d" "013_soc_soh\source\sys_pmm.d" "013_soc_soh\source\sys_selftest.d" "013_soc_soh\source\sys_startup.d" "013_soc_soh\source\sys_vim.d" "013_soc_soh\source\system.d" "ORKA\System\Notification.d" "ORKA\System\orkaMain.d" "ORKA\System\Tasks\Task100ms\task100ms.d" "ORKA\System\Tasks\Task10ms\task10ms.d" "ORKA\UserDefinedApis\CellLookUpTable\cellLookupTable.d" 
+	-$(RM) "ORKA\UserDefinedApis\CellLookUpTable\cells.d" "ORKA\UserDefinedApis\CircularBuffer\circularBuffer.d" "ORKA\UserDefinedApis\Sox\sox.d" 
 	-$(RM) "013_soc_soh\source\dabort.d" "013_soc_soh\source\os_portasm.d" "013_soc_soh\source\sys_core.d" "013_soc_soh\source\sys_intvecs.d" "013_soc_soh\source\sys_mpu.d" "013_soc_soh\source\sys_pmu.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

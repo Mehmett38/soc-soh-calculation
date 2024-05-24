@@ -1,30 +1,15 @@
 /*
- * molicel.h
+ * cells.c
  *
- *  Created on: 21 May 2024
+ *  Created on: 23 May 2024
  *      Author: mehmet.dincer
  */
 
-#ifndef ORKA_USERDEFINEDAPIS_MOLICELLOOKUPTABLE_MOLICEL_H_
-#define ORKA_USERDEFINEDAPIS_MOLICELLOOKUPTABLE_MOLICEL_H_
+#include "cells.h"
 
-#include <stdint.h>
+#if USING_CELL == CELL_MOLICEL_PB45
 
-//!< @refgroup MOLICEL_TABLE_
-#define MOLICEL_TABLE_IDLE              (0x00)
-#define MOLICEL_TABLE_DISCHARGING       (0x00)  //100
-#define MOLICEL_TABLE_CHARGING          (0x01)  //010
-
-#define MOLICEL_TABLE_SIZE              (101u)
-
-typedef struct MolicelTable_s{
-    uint32_t capacity;
-    float voltage;
-    float resistance;
-}MolicelTable_ts;
-
-
-extern const MolicelTable_ts molicelChargeTable[MOLICEL_TABLE_SIZE] =
+const CellTable_ts molicelChargeTable[CELL_TABLE_SIZE] =
 {
      {4500, 4.1803f, 13.437f},
      {4455, 4.1781f, 13.439f},
@@ -126,10 +111,115 @@ extern const MolicelTable_ts molicelChargeTable[MOLICEL_TABLE_SIZE] =
      {135, 2.9637f, 30.287f},
      {90, 2.8736f, 31.069f},
      {45, 2.7716f, 31.805f},
-     {1, 2.6567f, 32.481f}
+     {0, 2.6567f, 32.481f}
 };
 
-extern const MolicelTable_ts moliceDischargeTable[MOLICEL_TABLE_SIZE] =
+const CellTable_ts molicelIdleChargeTable[CELL_TABLE_SIZE] =
+{
+     {4500, 4.1706, 13.331},
+     {4455, 4.1669, 13.335},
+     {4410, 4.1615, 13.344},
+     {4365, 4.1548, 13.358},
+     {4320, 4.1469, 13.372},
+     {4275, 4.1381, 13.402},
+     {4230, 4.1285, 13.413},
+     {4185, 4.1185, 13.465},
+     {4140, 4.108, 13.469},
+     {4095, 4.0972, 13.527},
+     {4050, 4.0862, 13.56},
+     {4005, 4.0752, 13.596},
+     {3960, 4.0643, 13.67},
+     {3915, 4.0534, 13.679},
+     {3870, 4.0426, 13.745},
+     {3825, 4.032, 13.747},
+     {3780, 4.0217, 13.749},
+     {3735, 4.0116, 13.752},
+     {3690, 4.0017, 13.759},
+     {3645, 3.9922, 13.768},
+     {3600, 3.9829, 13.78},
+     {3555, 3.9738, 13.793},
+     {3510, 3.965, 13.811},
+     {3465, 3.9564, 13.824},
+     {3420, 3.948, 13.826},
+     {3375, 3.9399, 13.83},
+     {3330, 3.9318, 13.852},
+     {3285, 3.9239, 13.862},
+     {3240, 3.9161, 13.903},
+     {3195, 3.9084, 13.906},
+     {3150, 3.9007, 13.913},
+     {3105, 3.893, 13.955},
+     {3060, 3.8853, 13.961},
+     {3015, 3.8775, 13.995},
+     {2970, 3.8696, 14.004},
+     {2925, 3.8617, 14.007},
+     {2880, 3.8536, 14.028},
+     {2835, 3.8453, 14.063},
+     {2790, 3.8369, 14.075},
+     {2745, 3.8283, 14.101},
+     {2700, 3.8195, 14.12},
+     {2655, 3.8104, 14.152},
+     {2610, 3.8012, 14.177},
+     {2565, 3.7917, 14.179},
+     {2520, 3.782, 14.214},
+     {2475, 3.7721, 14.226},
+     {2430, 3.762, 14.235},
+     {2385, 3.7517, 14.26},
+     {2340, 3.7412, 14.291},
+     {2295, 3.7305, 14.295},
+     {2250, 3.7197, 14.342},
+     {2205, 3.7087, 14.344},
+     {2160, 3.6977, 14.358},
+     {2115, 3.6865, 14.395},
+     {2070, 3.6753, 14.414},
+     {2025, 3.6641, 14.423},
+     {1980, 3.6528, 14.441},
+     {1935, 3.6416, 14.458},
+     {1890, 3.6305, 14.464},
+     {1845, 3.6194, 14.483},
+     {1800, 3.6085, 14.499},
+     {1755, 3.5977, 14.506},
+     {1710, 3.5871, 14.518},
+     {1665, 3.5767, 14.54},
+     {1620, 3.5664, 14.548},
+     {1575, 3.5565, 14.566},
+     {1530, 3.5467, 14.568},
+     {1485, 3.5372, 14.57},
+     {1440, 3.5279, 14.583},
+     {1395, 3.5188, 14.586},
+     {1350, 3.51, 14.592},
+     {1305, 3.5013, 14.593},
+     {1260, 3.4927, 14.624},
+     {1215, 3.4842, 14.664},
+     {1170, 3.4758, 14.738},
+     {1125, 3.4672, 15.054},
+     {1080, 3.4586, 15.409},
+     {1035, 3.4497, 15.804},
+     {990, 3.4404, 16.238},
+     {945, 3.4306, 16.713},
+     {900, 3.4201, 17.23},
+     {855, 3.4087, 17.789},
+     {810, 3.3963, 18.39},
+     {765, 3.3826, 19.031},
+     {720, 3.3674, 19.714},
+     {675, 3.3503, 20.436},
+     {630, 3.3312, 21.197},
+     {585, 3.3095, 21.995},
+     {540, 3.2851, 22.827},
+     {495, 3.2574, 23.692},
+     {450, 3.2261, 24.585},
+     {405, 3.1907, 25.505},
+     {360, 3.1507, 26.445},
+     {315, 3.1055, 27.402},
+     {270, 3.0546, 28.371},
+     {225, 2.9973, 29.346},
+     {180, 2.9331, 30.32},
+     {135, 2.861, 31.287},
+     {90, 2.7805, 32.238},
+     {45, 2.6907, 33.164},
+     {0, 2.5906, 34.057}
+};
+
+const CellTable_ts moliceDischargeTable[CELL_TABLE_SIZE] =
 {
      {4500, 4.1609f, 13.225f},
      {4455, 4.1556f, 13.231f},
@@ -231,94 +321,7 @@ extern const MolicelTable_ts moliceDischargeTable[MOLICEL_TABLE_SIZE] =
      {135, 2.7583f, 32.287f},
      {90, 2.6874f, 33.406f},
      {45, 2.6097f, 34.524f},
-     {1, 2.5246f, 35.6340f}
+     {0, 2.5246f, 35.6340f}
 };
 
-/**
- * @brief find the related MolicelTable_ts by using table name
- * @param[in] molicelChargeTable or moliceDischargeTable
- */
-#define FIND_MOLICELL_TABLE_BY_VOLTAGE(tableName)                       \
-        if(voltage >= tableName[0].voltage)                             \
-        {                                                               \
-            return tableName[0];                                        \
-        }                                                               \
-        else if(voltage <= tableName[MOLICEL_TABLE_SIZE - 1].voltage)   \
-        {                                                               \
-            return tableName[MOLICEL_TABLE_SIZE - 1];                   \
-        }                                                               \
-        else                                                            \
-        {                                                               \
-            for(int i = 1; i < (MOLICEL_TABLE_SIZE - 1); i++)           \
-            {                                                           \
-                if(voltage >= tableName[i].voltage)                     \
-                {                                                       \
-                    return tableName[i];                                \
-                }                                                       \
-            }                                                           \
-        }
-
-/**
- * @find the capacity and resistance by using the voltage
- * @param[in] voltage value for param search @refgroup MOLICEL_TABLE_
- * @return MolicelTable_ts
- */
-static MolicelTable_ts AE_molicelFindByVoltage(float voltage, uint8_t MOLICEL_TABLE_)
-{
-    MolicelTable_ts moliTab = {0};
-
-    if(MOLICEL_TABLE_)       // if charging or idle mode
-    {
-        FIND_MOLICELL_TABLE_BY_VOLTAGE(molicelChargeTable);
-    }
-
-    FIND_MOLICELL_TABLE_BY_VOLTAGE(moliceDischargeTable);
-
-    return moliTab;
-}
-
-/**
- * @brief find the related MolicelTable_ts by using table name
- * @param[in] molicelChargeTable or moliceDischargeTable
- */
-#define FIND_MOLICELL_TABLE_BY_CAPACITY(tableName)                     \
-        if(capacity >= tableName[0].capacity)                          \
-        {                                                              \
-            return tableName[0];                                       \
-        }                                                              \
-        else if(capacity <= tableName[MOLICEL_TABLE_SIZE - 1].capacity)\
-        {                                                              \
-            return tableName[MOLICEL_TABLE_SIZE - 1];                  \
-        }                                                              \
-        else                                                           \
-        {                                                              \
-            for(int i = 1; i < (MOLICEL_TABLE_SIZE - 1); i++)          \
-            {                                                          \
-                if(capacity >= tableName[i].capacity)                  \
-                {                                                      \
-                    return tableName[i];                               \
-                }                                                      \
-            }                                                          \
-        }
-
-/**
- * @find the capacity and resistance by using the c
- * @param[in] voltage value for param search @refgroup MOLICEL_TABLE_
- * @return MolicelTable_ts
- */
-static MolicelTable_ts AE_molicelFindByCapacity(uint32_t capacity, uint8_t MOLICEL_TABLE_)
-{
-    MolicelTable_ts moliTab = {0};
-
-    if(MOLICEL_TABLE_)       // if charging or idle mode
-    {
-        FIND_MOLICELL_TABLE_BY_CAPACITY(molicelChargeTable);
-    }
-
-    FIND_MOLICELL_TABLE_BY_CAPACITY(moliceDischargeTable);
-
-    return moliTab;
-}
-
-
-#endif /* ORKA_USERDEFINEDAPIS_MOLICELLOOKUPTABLE_MOLICEL_H_ */
+#endif
