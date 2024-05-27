@@ -19,7 +19,8 @@ typedef struct{
     uint16_t tail;
     float rxCurrent;
     float rxVoltage;
-    uint8_t dataFlag;
+    uint32_t receivedDataNumber;
+    uint8_t isDataReadyFlag;
 }CircularBuffer;
 extern CircularBuffer crcBuffer;
 

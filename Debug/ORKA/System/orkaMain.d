@@ -35,6 +35,9 @@ ORKA/System/orkaMain.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013
 ORKA/System/orkaMain.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/Sox/sox.h
 ORKA/System/orkaMain.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h
 ORKA/System/orkaMain.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/gio.h
+ORKA/System/orkaMain.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h
+ORKA/System/orkaMain.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h
+ORKA/System/orkaMain.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h
 
 ../ORKA/System/orkaMain.c:
 
@@ -105,4 +108,10 @@ C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedA
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h:
 
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/gio.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h:
 

@@ -111,7 +111,7 @@ const CellTable_ts molicelChargeTable[CELL_TABLE_SIZE] =
      {135, 2.9637f, 30.287f},
      {90, 2.8736f, 31.069f},
      {45, 2.7716f, 31.805f},
-     {0, 2.6567f, 32.481f}
+     {0.000001f, 2.6567f, 32.481f}
 };
 
 const CellTable_ts molicelIdleChargeTable[CELL_TABLE_SIZE] =
@@ -216,7 +216,7 @@ const CellTable_ts molicelIdleChargeTable[CELL_TABLE_SIZE] =
      {135, 2.861, 31.287},
      {90, 2.7805, 32.238},
      {45, 2.6907, 33.164},
-     {0, 2.5906, 34.057}
+     {0.000001f, 2.5906, 34.057}
 };
 
 const CellTable_ts moliceDischargeTable[CELL_TABLE_SIZE] =
@@ -321,7 +321,7 @@ const CellTable_ts moliceDischargeTable[CELL_TABLE_SIZE] =
      {135, 2.7583f, 32.287f},
      {90, 2.6874f, 33.406f},
      {45, 2.6097f, 34.524f},
-     {0, 2.5246f, 35.6340f}
+     {0.000001f, 2.5246f, 35.6340f}
 };
 
 #endif

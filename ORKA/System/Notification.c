@@ -15,8 +15,8 @@ void sciNotification(sciBASE_t *sci, uint32 flags)
     if(sci == scilinREG && flags == SCI_RX_INT)
     {
         sciReceive(scilinREG, 1, &rxData);
-        crcBuffer.buffer[crcBuffer.head++] = rxData;
-        crcBuffer.head %= BUFFER_LEN;
+        crcBuffer.buffer[crcBuffer.head] = rxData;
+        crcBuffer.head = (crcBuffer.head + 1) % BUFFER_LEN;
 
         if(rxData == '\n')
         {

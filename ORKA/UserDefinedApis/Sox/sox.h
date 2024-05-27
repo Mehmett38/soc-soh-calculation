@@ -14,8 +14,12 @@
 #define SOH_CALCULATE_PERIOD            (1000)      //if total capacity differense is bigger than 1000mA calculate SOH
 
 typedef enum BatState_e{
-    BAT_NOT_INITIALIZED,
-    BAT_INITIALIZED,
+    BAT_NOT_INITIALIZED,                    //!!! do not change the order, 0.
+    BAT_INITIALIZED_WITHOUT_CALIBRATION,    //!!! do not change the order, 2.
+    BAT_INITIALIZED,                        //!!! do not change the order, 4.
+    BAT_CALIBRATED,
+    BAT_WAIT_FOR_LOWER_DOD_POINT,
+    BAT_WAIT_FOR_UPPER_DOD_POINT,
     BAT_UPPER_DOD_POINT,
     BAT_LOWER_DOD_POINT,
     BAT_CHARGING_MODE,
@@ -49,12 +53,13 @@ typedef struct BatSoxVal_s{
     float batInstantaneousCapacity;
     float previousCapacity;                  //
     float sumOfCapacityChange;              //sum the changes changes ratio to calculate soh
+    float batTotalCapacity;
     BatState_te batStates;
+    BatState_te batCalibrationState;
 }BatSoxVal_ts;
 
 
 void AE_soxInit(SoxInitTypeDef_ts * soxInit);
 void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float meanCellVolt);
-
 
 #endif /* SOX_SOX_H_ */

@@ -6,11 +6,13 @@
  */
 
 #include "orkaMain.h"
+#include "math.h"
 
 static void orkaHarwareInit();
 static void orkaSoxInit();
 
 extern uint8_t rxData;          //!< sciLinReg2 read val
+extern BatSoxVal_ts batSox;
 
 int AE_orkaMain()
 {

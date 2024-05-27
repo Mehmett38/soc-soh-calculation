@@ -23,5 +23,6 @@ void AE_circularBufferParse()
     crcBuffer.tail = crcBuffer.head;
     crcBuffer.rxCurrent = *((float*)((void*)rxBuffer));
     crcBuffer.rxVoltage = *((float*)((void*)&rxBuffer[4]));
-    crcBuffer.dataFlag = 1;
+    crcBuffer.receivedDataNumber++;
+    crcBuffer.isDataReadyFlag = 1;
 }

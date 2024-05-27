@@ -21,9 +21,9 @@
 
 #define USING_CELL                   (CELL_MOLICEL_PB45)
 
-#define MIN_CELL_VOLTAGE             (molicelChargeTable[0].voltage)
-#define MAX_CELL_VOLTAGE             (moliceDischargeTable[CELL_TABLE_SIZE - 1].voltage)
-#define MAX_CELL_CAPACITY                (molicelChargeTable[0].capacity)
+#define MIN_CELL_VOLTAGE             (molicelChargeTable[CELL_TABLE_SIZE - 1].voltage)
+#define MAX_CELL_VOLTAGE             (moliceDischargeTable[0].voltage)
+#define MAX_CELL_CAPACITY            (molicelChargeTable[0].capacity)
 
 typedef struct CellTable_s{
     float capacity;

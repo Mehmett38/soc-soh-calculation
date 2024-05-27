@@ -57,9 +57,11 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
  */
 void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float meanCellVolt)
 {
+
+    //!< first swithc check the system is initialized and calibrated
     switch(batSox->batStates)
     {
-        case BAT_NOT_INITIALIZED:       //work only one after this time read from the eeprom
+        case BAT_NOT_INITIALIZED ... BAT_INITIALIZED_WITHOUT_CALIBRATION:       //work only one after this time read from the eeprom
         {
             if(meanCellVolt >= soxInitVals.maxChargeVoltage)
             {
@@ -69,33 +71,44 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
             {
                 batSox->batStates = BAT_LOWER_DOD_POINT;
             }
-
-            /*TODO For the simulation test code can be delated in LTC6812 code version*/
-            batSox->previousCapacity = batSox->batInstantaneousCapacity;
-
+            else
+            {
+                batSox->batStates = (batSox->batCalibrationState != BAT_NOT_INITIALIZED) ? BAT_INITIALIZED_WITHOUT_CALIBRATION : batSox->batStates;
+            }
             break;
         }
         case BAT_UPPER_DOD_POINT:       //enter only one times
         {
             batSox->soc = 100.0f;
-            batSox->batInstantaneousCapacity = soxInitVals.batDodCapacity;
-            batSox->batStates = BAT_INITIALIZED;
+            batSox->batInstantaneousCapacity = 0;
+
+            batSox->batCalibrationState = (batSox->batCalibrationState == BAT_WAIT_FOR_UPPER_DOD_POINT) ? BAT_CALIBRATED : BAT_WAIT_FOR_LOWER_DOD_POINT;
+            batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED)? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
+
             break;
         }
         case BAT_LOWER_DOD_POINT:       //enter only one times
         {
             batSox->soc = 0.0f;
             batSox->batInstantaneousCapacity = 0;
-            batSox->batStates = BAT_INITIALIZED;
+
+            batSox->batCalibrationState = (batSox->batCalibrationState == BAT_WAIT_FOR_LOWER_DOD_POINT) ? BAT_CALIBRATED : BAT_WAIT_FOR_UPPER_DOD_POINT;
+            batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED)? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
+
             break;
         }
-        case BAT_INITIALIZED:
+    }
+
+    //!< second switch calculate the soc, soh and cycle
+    switch(batSox->batStates)
+    {
+        case BAT_INITIALIZED_WITHOUT_CALIBRATION ... BAT_INITIALIZED:
         {
+            batSox->sumOfCapacityChange += ABSOLUTE(batSox->previousCapacity - batSox->batInstantaneousCapacity);
+            batSox->previousCapacity = batSox->batInstantaneousCapacity;
+
             if(passingCurrent == 0)
             {
-                batSox->sumOfCapacityChange += ABSOLUTE(batSox->previousCapacity - batSox->batInstantaneousCapacity);
-                batSox->previousCapacity = batSox->batInstantaneousCapacity;
-
                 if(batSox->sumOfCapacityChange > SOH_CALCULATE_PERIOD)       //if total voltage change is > 1V recalculate soh
                 {
                     batSox->sumOfCapacityChange = 0.0f;
@@ -130,7 +143,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
 
                     batSox->soh = (batSox->batInstantaneousCapacity / systemInitialCap) * 100.0f;
 
-                    batSox->batStates = BAT_INITIALIZED;
+                    batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED) ? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
                     break;
                 }
                 case BAT_CHARGING_MODE:         //calculate SOC and Cycle number
@@ -139,7 +152,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
                     batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
                     batSox->cycle += (passingCurrent / soxInitVals.batDodCapacity) / 2;
 
-                    batSox->batStates = BAT_INITIALIZED;
+                    batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED) ? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
                     break;
                 }
                 case BAT_DISCHARGING_MODE:      //calculate SOC and Cycle number
@@ -148,7 +161,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
                     batSox->soc += passingCurrent / soxInitVals.batDodCapacity * 100.0f;
                     batSox->cycle -= (passingCurrent / soxInitVals.batDodCapacity) / 2;
 
-                    batSox->batStates = BAT_INITIALIZED;
+                    batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED) ? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
                     break;
                 }
             }
@@ -158,8 +171,8 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
 
 static BatSoxVal_ts AE_readBatSoxDatasFromEeprom(void)
 {
-    //Bu fonksiyon içerisinde eepromdan okunan BatSoxVal_ts deðerleri atanacak
-    //test etmek için boþ býrakýldý SOH = 100, SOC = 0, Cycle = 0 olarak kabul edildi
+    //Bu fonksiyon iï¿½erisinde eepromdan okunan BatSoxVal_ts deï¿½erleri atanacak
+    //test etmek iï¿½in boï¿½ bï¿½rakï¿½ldï¿½ SOH = 100, SOC = 0, Cycle = 0 olarak kabul edildi
     BatSoxVal_ts batSoxEeprom =
     {
          .batInstantaneousCapacity = 0.0f,
