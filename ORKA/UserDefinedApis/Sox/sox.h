@@ -39,27 +39,31 @@ typedef struct SoxInitTypeDef_s{
     uint16_t cellUpperDocRatio;             //Doc = 1 - DOD between 0-100
     float minDischargeVoltage;              // !!!calculated by program do not set
     float maxChargeVoltage;                 // !!!calculated by program do not set
-    float batTotatlCapacity;                // !!!calculated by program do not set
+    float batNetCapacity;                // !!!calculated by program do not set
     float batDodCapacity;                   // !!!calculated by program do not set
+    float batMinDodCapacity;                // !!!calculated by program do not set
+    float batMaxDodCapacity;                // !!!calculated by program do not set
 }SoxInitTypeDef_ts;
 
 /**
  * Battery Instantaneous Datas
  */
 typedef struct BatSoxVal_s{
-    float soc;
-    float soh;                              //ratio beetween 0-100
-    float cycle;
-    float batInstantaneousCapacity;
-    float previousCapacity;                  //
-    float sumOfCapacityChange;              //sum the changes changes ratio to calculate soh
-    float batTotalCapacity;
-    BatState_te batStates;
-    BatState_te batCalibrationState;
+    double soc;                             //!< ratio between 0-100
+    double soh;                             //!< ratio between 0-100
+    double calibrationSoh;                  //!< (calculated system calibration capacity) / (4500.0f)
+    double cycle;                           //!< cell life cycle counter
+    double batInstantaneousCapacity;        //!< TODO may be located in SoxInitTypeDef_ts structure
+    double previousCapacity;                //!< use to calculate the soh calculation period
+    double sumOfCapacityChange;             //!< sum the changes changes ratio to calculate soh
+    double batTotalCapacity;                //!< system calculated capacity by fully charging and discharging or fully discharging or charging
+    BatState_te batStates;                  //!<
+    BatState_te batCalibrationState;        //!<
 }BatSoxVal_ts;
 
 
 void AE_soxInit(SoxInitTypeDef_ts * soxInit);
 void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float meanCellVolt);
+BatSoxVal_ts AE_readBatSoxDatasFromEeprom(void);
 
 #endif /* SOX_SOX_H_ */

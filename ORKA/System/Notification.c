@@ -18,11 +18,23 @@ void sciNotification(sciBASE_t *sci, uint32 flags)
         crcBuffer.buffer[crcBuffer.head] = rxData;
         crcBuffer.head = (crcBuffer.head + 1) % BUFFER_LEN;
 
+
         if(rxData == '\n')
         {
-            if(crcBuffer.buffer[(crcBuffer.tail + 8) % BUFFER_LEN] != '\r')
+            if(crcBuffer.head == 0)
             {
-                return;
+                if(crcBuffer.buffer[BUFFER_LEN - 2] != '\r')
+                    return;
+            }
+            else if(crcBuffer.head == 1)
+            {
+                if(crcBuffer.buffer[BUFFER_LEN - 1] != '\r')
+                    return;
+            }
+            else
+            {
+                if(crcBuffer.buffer[crcBuffer.head - 2] != '\r')
+                    return;
             }
 
             AE_circularBufferParse();

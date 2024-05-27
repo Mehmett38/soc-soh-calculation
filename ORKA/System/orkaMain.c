@@ -31,7 +31,7 @@ int AE_orkaMain()
                          &task_10ms);
     configASSERT(status);
 
-    //!< 100ms task
+    //!< 100ms task dummy task
     status = xTaskCreate(AE_task100ms,
                          "task_100ms",
                          (configMINIMAL_STACK_SIZE * 3),
@@ -64,7 +64,7 @@ static void orkaHarwareInit()
     _enable_interrupt_();
 
     sciReceive(scilinREG, 1, &rxData);
-    crcBuffer.rxVoltage = 3.5f;     //dumy variable
+    crcBuffer.rxVoltage = 3.5f;     //dumy variable delate in original code
 }
 
 /**
@@ -73,8 +73,10 @@ static void orkaHarwareInit()
 static void orkaSoxInit()
 {
     SoxInitTypeDef_ts soxInit = {0};
+    //bu fonksiyon eepromdan datalari okuyup batSox degiskenine atamalidir
+    batSox = AE_readBatSoxDatasFromEeprom();
 
-    soxInit.cellCapacityInmAh       = 4500u;
+    soxInit.cellCapacityInmAh       = batSox.batTotalCapacity;
     soxInit.numberOfParallelCell    = 1u;
     soxInit.numberOfLifeCycle       = 600u;         //             __________________________________
     soxInit.cellLowerDocRatio       = 0u;           //system DOD  | Lower | System Operation | Upper |
