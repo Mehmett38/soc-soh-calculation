@@ -13,6 +13,12 @@ uint32_t counterOf10msTask = 0;
 
 void AE_task10ms(void * param)
 {
+    TickType_t xLastWakeTime;
+    const TickType_t xFrequency = 10;
+
+    // Initialise the xLastWakeTime variable with the current time.
+    xLastWakeTime = xTaskGetTickCount ();
+
     for(;;)
     {
         if(crcBuffer.isDataReadyFlag != 0)
@@ -23,6 +29,6 @@ void AE_task10ms(void * param)
         }
 
         counterOf10msTask++;
-        vTaskDelay(10);
+        vTaskDelayUntil( &xLastWakeTime, xFrequency );
     }
 }

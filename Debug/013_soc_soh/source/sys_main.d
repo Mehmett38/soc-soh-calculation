@@ -33,6 +33,10 @@
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/reg_gio.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/Sox/sox.h
+013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/CellLookUpTable/cells.h
+013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h
+013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h
+013_soc_soh/source/sys_main.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h
 013_soc_soh/source/sys_main.obj: C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/gio.h
 
@@ -101,6 +105,14 @@ C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/inclu
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/013_soc_soh/include/sys_core.h:
 
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/Sox/sox.h:
+
+C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/UserDefinedApis/CellLookUpTable/cells.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h:
 
 C:/Users/mehmet.dincer/Desktop/MehDin/codeComposer/013_soc_soh/ORKA/System/Tasks/Task100ms/task100ms.h:
 

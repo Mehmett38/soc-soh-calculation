@@ -9,8 +9,9 @@
 #define SOX_SOX_H_
 
 #include "stdint.h"
+#include "cells.h"
+#include "math.h"
 
-#define ABSOLUTE(x)                     (((x) < 0)? -(x) : (x))
 #define SOH_CALCULATE_PERIOD            (1000)      //if total capacity differense is bigger than 1000mA calculate SOH
 
 typedef enum BatState_e{
@@ -33,13 +34,14 @@ typedef enum BatState_e{
  */
 typedef struct SoxInitTypeDef_s{
     uint32_t cellCapacityInmAh;             //capacity of one cell
-    uint16_t numberOfParallelCell;
+//    uint16_t numberOfParallelCell;        //UNUSED TODO if givin total voltage instead of mean voltage, this parameter will be used
     uint16_t numberOfLifeCycle;             //cell max cycle number or desired number
-    uint16_t cellLowerDocRatio;             //Doc = 1 - DOD between 0-100
-    uint16_t cellUpperDocRatio;             //Doc = 1 - DOD between 0-100
+    float cellLowerDocRatio;              //Doc = 1 - DOD between 0-100
+    float cellUpperDocRatio;              //Doc = 1 - DOD between 0-100
+    float dodRatio;                         // dod ratio between 0-1
     float minDischargeVoltage;              // !!!calculated by program do not set
     float maxChargeVoltage;                 // !!!calculated by program do not set
-    float batNetCapacity;                // !!!calculated by program do not set
+    float batNetCapacity;                   // !!!calculated by program do not set
     float batDodCapacity;                   // !!!calculated by program do not set
     float batMinDodCapacity;                // !!!calculated by program do not set
     float batMaxDodCapacity;                // !!!calculated by program do not set
@@ -51,7 +53,7 @@ typedef struct SoxInitTypeDef_s{
 typedef struct BatSoxVal_s{
     double soc;                             //!< ratio between 0-100
     double soh;                             //!< ratio between 0-100
-    double calibrationSoh;                  //!< (calculated system calibration capacity) / (4500.0f)
+    double calibrationSoh;                  //!< (system calculated calibration capacity) / (4500.0f) used to set soh between 0-1
     double cycle;                           //!< cell life cycle counter
     double batInstantaneousCapacity;        //!< TODO may be located in SoxInitTypeDef_ts structure
     double previousCapacity;                //!< use to calculate the soh calculation period

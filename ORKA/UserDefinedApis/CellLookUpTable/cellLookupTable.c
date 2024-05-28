@@ -18,7 +18,7 @@ static CellTable_ts AE_interpolationByVoltage(CellTable_ts index1, CellTable_ts 
  * @param[in] voltage value for param search @refgroup MOLICEL_TABLE_
  * @return MolicelTable_ts
  */
-CellTable_ts AE_tableFindByVoltage(float voltage, uint8_t MOLICEL_TABLE_)
+CellTable_ts AE_tableFindByVoltage(double voltage, uint8_t MOLICEL_TABLE_)
 {
     if(MOLICEL_TABLE_ & 0x01)       // if charging or idle mode
     {

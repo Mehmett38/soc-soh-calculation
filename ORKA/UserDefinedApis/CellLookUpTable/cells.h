@@ -26,9 +26,9 @@
 #define MAX_CELL_CAPACITY            (molicelChargeTable[0].capacity)
 
 typedef struct CellTable_s{
-    float capacity;
-    float voltage;
-    float resistance;
+    double capacity;
+    double voltage;
+    double resistance;
 }CellTable_ts;
 
 #if USING_CELL == CELL_MOLICEL_PB45

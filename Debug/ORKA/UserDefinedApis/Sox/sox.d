@@ -14,6 +14,9 @@ ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20
 ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_stdint.h
 ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/sys/_stdint.h
 ORKA/UserDefinedApis/Sox/sox.obj: ../ORKA/UserDefinedApis/Sox/sox.h
+ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h
+ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h
+ORKA/UserDefinedApis/Sox/sox.obj: C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h
 
 ../ORKA/UserDefinedApis/Sox/sox.c:
 
@@ -42,4 +45,10 @@ C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_stdint.h
 C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/sys/_stdint.h:
 
 ../ORKA/UserDefinedApis/Sox/sox.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/math.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/_defs.h:
+
+C:/ti/ccs1120/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/machine/_limits.h:
 
