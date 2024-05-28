@@ -76,11 +76,11 @@ static void orkaSoxInit()
     //bu fonksiyon eepromdan datalari okuyup batSox degiskenine atamalidir
     batSox = AE_readBatSoxDatasFromEeprom();
 
-    soxInit.cellCapacityInmAh       = batSox.batTotalCapacity;
+    soxInit.cellCapacityInmAh       = 4500;
 //    soxInit.numberOfParallelCell    = 1u;         //UNUSED variable
     soxInit.numberOfLifeCycle       = 600u;         //             __________________________________
-    soxInit.cellLowerDocRatio       = 5u;          //system DOD  | Lower | System Operation | Upper |
-    soxInit.cellUpperDocRatio       = 5u;          //            |__DOC__|______DOD_________|__DOC__|
+    soxInit.cellLowerDocRatio       = 5u;           //system DOD  | Lower | System Operation | Upper |
+    soxInit.cellUpperDocRatio       = 5u;           //            |__DOC__|______DOD_________|__DOC__|
 
     AE_soxInit(&soxInit);
 }
