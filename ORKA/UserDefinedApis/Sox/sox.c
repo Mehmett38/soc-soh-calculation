@@ -26,7 +26,7 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
     //calculate the system capacity
     soxInitVals.dodRatio = (100 - soxInitVals.cellLowerDocRatio - soxInitVals.cellUpperDocRatio) / 100.0f;
 
-    soxInitVals.batDodCapacity = soxInitVals.cellCapacityInmAh * soxInitVals.dodRatio;
+    soxInitVals.batDodCapacity = soxInitVals.cellCapacityInmAh * soxInitVals.dodRatio * soxInitVals.numberOfParallelCell;
     soxInitVals.batNetCapacity = batSox.batTotalCapacity;
 
     //calculate the minimum and maximum voltage according to dod
@@ -45,8 +45,10 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
  * @param[in] meaning cell voltage of the cell in the battery
  * @none
  */
-void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float meanCellVolt)
+void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float systemTotalVolt)
 {
+    float meanCellVolt = systemTotalVolt / soxInitVals.numberOfSerialCell;
+
     //!< first switch check the system is initialized and calibrated
     switch(batSox->batStates)
     {
@@ -160,7 +162,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float mean
                 {
                     //take the system capacity according to mean voltage
                     CellTable_ts moliTab = AE_tableFindByVoltage(meanCellVolt, CELL_TABLE_IDLE);
-                    float systemInitialCap = (moliTab.capacity - soxInitVals.batMinDodCapacity) * (batSox->calibrationSoh);
+                    float systemInitialCap = (moliTab.capacity * batSox->calibrationSoh) - soxInitVals.batMinDodCapacity;
 
                     //calculate the SOH by using calculated capacity and system capacity according to voltage
                     batSox->soh = (batSox->batInstantaneousCapacity / systemInitialCap) * 100.0f;

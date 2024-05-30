@@ -77,7 +77,8 @@ static void orkaSoxInit()
     batSox = AE_readBatSoxDatasFromEeprom();
 
     soxInit.cellCapacityInmAh       = 4500;
-//    soxInit.numberOfParallelCell    = 1u;         //UNUSED variable
+    soxInit.numberOfParallelCell    = 1u;         //UNUSED variable
+    soxInit.numberOfSerialCell      = 1u;
     soxInit.numberOfLifeCycle       = 600u;         //             __________________________________
     soxInit.cellLowerDocRatio       = 5u;           //system DOD  | Lower | System Operation | Upper |
     soxInit.cellUpperDocRatio       = 5u;           //            |__DOC__|______DOD_________|__DOC__|

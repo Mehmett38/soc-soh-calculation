@@ -34,7 +34,8 @@ typedef enum BatState_e{
  */
 typedef struct SoxInitTypeDef_s{
     uint32_t cellCapacityInmAh;             //capacity of one cell
-//    uint16_t numberOfParallelCell;        //UNUSED TODO if givin total voltage instead of mean voltage, this parameter will be used
+    uint16_t numberOfParallelCell;        //UNUSED TODO if givin total voltage instead of mean voltage, this parameter will be used
+    uint16_t numberOfSerialCell;
     uint16_t numberOfLifeCycle;             //cell max cycle number or desired number
     float cellLowerDocRatio;              //Doc = 1 - DOD between 0-100
     float cellUpperDocRatio;              //Doc = 1 - DOD between 0-100
@@ -66,7 +67,7 @@ typedef struct BatSoxVal_s{
 
 
 void AE_soxInit(SoxInitTypeDef_ts * soxInit);
-void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float meanCellVolt);
+void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float systemTotalVolt);
 BatSoxVal_ts AE_readBatSoxDatasFromEeprom(void);
 void AE_dodCalibrate();
 
