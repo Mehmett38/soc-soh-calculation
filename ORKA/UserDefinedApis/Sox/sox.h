@@ -12,7 +12,8 @@
 #include "cells.h"
 #include "math.h"
 
-#define SOH_CALCULATE_PERIOD            (1000)      //if total capacity differense is bigger than 1000mA calculate SOH
+#define SOH_CALCULATE_PERIOD            (MAX_CELL_CAPACITY * soxInitVals.numberOfParallelCell / 2)      //if total capacity differense is bigger than 1000mA calculate SOH
+#define SYSTEM_TOTAL_CAPACITY           (MAX_CELL_CAPACITY * soxInitVals.numberOfParallelCell)
 
 typedef enum BatState_e{
     BAT_NOT_INITIALIZED,                    //!!! do not change the order, 0.

@@ -18,20 +18,26 @@ static CellTable_ts AE_interpolationByVoltage(CellTable_ts index1, CellTable_ts 
  * @param[in] voltage value for param search @refgroup MOLICEL_TABLE_
  * @return MolicelTable_ts
  */
-CellTable_ts AE_tableFindByVoltage(double voltage, uint8_t MOLICEL_TABLE_)
+CellTable_ts AE_tableFindByVoltage(double voltage, uint16_t numberOfParallelCell, uint8_t MOLICEL_TABLE_)
 {
+    CellTable_ts tempCellTable;
+
     if(MOLICEL_TABLE_ & 0x01)       // if charging or idle mode
     {
-        return AE_findIndexByVoltage(molicelIdleChargeTable, voltage);
+        tempCellTable = AE_findIndexByVoltage(molicelIdleChargeTable, voltage);
     }
     else if(MOLICEL_TABLE_ & 0x02)
     {
-        return AE_findIndexByVoltage(molicelChargeTable, voltage);
+        tempCellTable = AE_findIndexByVoltage(molicelChargeTable, voltage);
     }
     else
     {
-        return AE_findIndexByVoltage(moliceDischargeTable, voltage);
+        tempCellTable = AE_findIndexByVoltage(moliceDischargeTable, voltage);
     }
+
+    tempCellTable.capacity *= numberOfParallelCell;
+
+    return tempCellTable;
 }
 
 
@@ -40,8 +46,10 @@ CellTable_ts AE_tableFindByVoltage(double voltage, uint8_t MOLICEL_TABLE_)
  * @param[in] voltage value for param search @refgroup MOLICEL_TABLE_
  * @return MolicelTable_ts
  */
-CellTable_ts AE_tableFindByCapacity(uint32_t capacity, uint8_t MOLICEL_TABLE_)
+CellTable_ts AE_tableFindByCapacity(uint32_t capacity, uint16_t numberOfParallelCell, uint8_t MOLICEL_TABLE_)
 {
+    capacity /= numberOfParallelCell;
+
     if(MOLICEL_TABLE_ & 0x01)       // if charging or idle mode
     {
         return AE_findIndexByCapacity(molicelIdleChargeTable, capacity);

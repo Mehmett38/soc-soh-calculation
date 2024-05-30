@@ -26,8 +26,9 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
     //calculate the system capacity
     soxInitVals.dodRatio = (100 - soxInitVals.cellLowerDocRatio - soxInitVals.cellUpperDocRatio) / 100.0f;
 
-    soxInitVals.batDodCapacity = soxInitVals.cellCapacityInmAh * soxInitVals.dodRatio * soxInitVals.numberOfParallelCell;
-    soxInitVals.batNetCapacity = batSox.batTotalCapacity;
+    soxInitVals.cellCapacityInmAh *= soxInitVals.numberOfParallelCell;
+    soxInitVals.batDodCapacity = soxInitVals.cellCapacityInmAh * soxInitVals.dodRatio;
+    soxInitVals.batNetCapacity = batSox.batTotalCapacity; //used for the initialized systems
 
     //calculate the minimum and maximum voltage according to dod
     soxInitVals.batMinDodCapacity = (soxInitVals.cellCapacityInmAh * soxInitVals.cellLowerDocRatio) / 100.0f;
@@ -78,7 +79,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
                 soxInitVals.batNetCapacity = batSox->batInstantaneousCapacity;
                 batSox->batTotalCapacity = soxInitVals.batNetCapacity;
                 //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
-                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / MAX_CELL_CAPACITY;
+                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / SYSTEM_TOTAL_CAPACITY;
                 batSox->soc = 100.0f;
                 batSox->cycle = 0.0f;
                 batSox->soh = 100.0f;
@@ -99,7 +100,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
                 batSox->batTotalCapacity = soxInitVals.batNetCapacity;
                 batSox->batInstantaneousCapacity = 0;
                 //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
-                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / MAX_CELL_CAPACITY;
+                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / SYSTEM_TOTAL_CAPACITY;
                 batSox->soc = 0.0f;
                 batSox->cycle = 0.0f;
                 batSox->soh = 100.0f;
@@ -161,7 +162,7 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
                 case BAT_IDLE_MODE:             //calculate SOH
                 {
                     //take the system capacity according to mean voltage
-                    CellTable_ts moliTab = AE_tableFindByVoltage(meanCellVolt, CELL_TABLE_IDLE);
+                    CellTable_ts moliTab = AE_tableFindByVoltage(meanCellVolt, soxInitVals.numberOfParallelCell, CELL_TABLE_IDLE);
                     float systemInitialCap = (moliTab.capacity * batSox->calibrationSoh) - soxInitVals.batMinDodCapacity;
 
                     //calculate the SOH by using calculated capacity and system capacity according to voltage
@@ -244,10 +245,10 @@ static void AE_calculateMinMaxVoltage(void)
 {
     //calculate the min and max voltage according to DOD
     CellTable_ts moliTab = {0};
-    moliTab = AE_tableFindByCapacity(soxInitVals.batMinDodCapacity, CELL_TABLE_DISCHARGING);
+    moliTab = AE_tableFindByCapacity(soxInitVals.batMinDodCapacity, soxInitVals.numberOfParallelCell, CELL_TABLE_DISCHARGING);
     soxInitVals.minDischargeVoltage = moliTab.voltage;
 
-    moliTab = AE_tableFindByCapacity(soxInitVals.batTempMaxDodCapacity, CELL_TABLE_CHARGING);
+    moliTab = AE_tableFindByCapacity(soxInitVals.batTempMaxDodCapacity, soxInitVals.numberOfParallelCell, CELL_TABLE_CHARGING);
     soxInitVals.maxChargeVoltage = moliTab.voltage;
 }
 
