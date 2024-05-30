@@ -12,6 +12,7 @@ BatSoxVal_ts batSox;
 
 static SoxInitTypeDef_ts soxInitVals;
 static void AE_calculateMinMaxVoltage(void);
+static void AE_soxInitializeSettings(BatSoxVal_ts *batSox, uint8_t dodLevel);
 
 /**
  * @brief
@@ -42,12 +43,13 @@ void AE_soxInit(SoxInitTypeDef_ts * soxInit)
 /**
  * @brief calculate the soc and soh
  * @param[in] batSox states global variable
- * @param[in] instantaneous passing current
- * @param[in] meaning cell voltage of the cell in the battery
+ * @param[in] instantaneous passing current (mAh)
+ * @param[in] system voltage
  * @none
  */
 void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float systemTotalVolt)
 {
+    //find the average cell voltage
     float meanCellVolt = systemTotalVolt / soxInitVals.numberOfSerialCell;
 
     //!< first switch check the system is initialized and calibrated
@@ -75,16 +77,8 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
             batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED)? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
 
             if(batSox->batStates == BAT_INITIALIZED)
-            {   //TODO bu degerleri fonksyion icerisine yaz
-                soxInitVals.batNetCapacity = batSox->batInstantaneousCapacity;
-                batSox->batTotalCapacity = soxInitVals.batNetCapacity;
-                //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
-                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / SYSTEM_TOTAL_CAPACITY;
-                batSox->soc = 100.0f;
-                batSox->cycle = 0.0f;
-                batSox->soh = 100.0f;
-                batSox->sumOfCapacityChange = 0.0f;
-                AE_dodCalibrate(batSox);
+            {
+                AE_soxInitializeSettings(batSox, UPPER_DOD_LEVEL);
             }
 
             break;
@@ -95,17 +89,8 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
             batSox->batStates = (batSox->batCalibrationState == BAT_CALIBRATED)? BAT_INITIALIZED : BAT_INITIALIZED_WITHOUT_CALIBRATION;
 
             if(batSox->batStates == BAT_INITIALIZED)
-            {   //TODO bu degerleri fonksyion icerisine yaz
-                soxInitVals.batNetCapacity = -batSox->batInstantaneousCapacity;
-                batSox->batTotalCapacity = soxInitVals.batNetCapacity;
-                batSox->batInstantaneousCapacity = 0;
-                //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
-                batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / SYSTEM_TOTAL_CAPACITY;
-                batSox->soc = 0.0f;
-                batSox->cycle = 0.0f;
-                batSox->soh = 100.0f;
-                batSox->sumOfCapacityChange = 0.0f;
-                AE_dodCalibrate(batSox);
+            {
+                AE_soxInitializeSettings(batSox, LOWER_DOD_LEVEL);
             }
 
             break;
@@ -155,10 +140,6 @@ void AE_soxCalculate_UML(BatSoxVal_ts * batSox, float passingCurrent, float syst
 
             switch(batSox->batStates)
             {
-                case BAT_NO_OPERATION:
-                {
-                    break;
-                }
                 case BAT_IDLE_MODE:             //calculate SOH
                 {
                     //take the system capacity according to mean voltage
@@ -252,6 +233,36 @@ static void AE_calculateMinMaxVoltage(void)
     soxInitVals.maxChargeVoltage = moliTab.voltage;
 }
 
+/*
+ * @brief set the system default settings after system initialized
+ * @param[in] upper or lovel dod level macro @refgroup DOD_LEVEL
+ * @return none
+ */
+static void AE_soxInitializeSettings(BatSoxVal_ts *batSox, uint8_t dodLevel)
+{
+    if(dodLevel == LOWER_DOD_LEVEL)
+    {
+        soxInitVals.batNetCapacity = -batSox->batInstantaneousCapacity;
+        batSox->batTotalCapacity = soxInitVals.batNetCapacity;
+        batSox->batInstantaneousCapacity = 0;
+        //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
+        batSox->soc = 0.0f;
+    }
+    else
+    {
+        soxInitVals.batNetCapacity = batSox->batInstantaneousCapacity;
+        batSox->batTotalCapacity = soxInitVals.batNetCapacity;
+        //calibration soh is system dead calibration rati + DOC ratio ; DOC = 1 - DOD
+        batSox->soc = 100.0f;
+    }
+
+    batSox->calibrationSoh = (batSox->batTotalCapacity / soxInitVals.dodRatio) / SYSTEM_TOTAL_CAPACITY;
+    batSox->cycle = 0.0f;
+    batSox->soh = 100.0f;
+    batSox->sumOfCapacityChange = 0.0f;
+    AE_dodCalibrate(batSox);
+}
+
 /**
  * @brief read sox datas from eeprom
  * @return previous batSox datas
@@ -264,7 +275,7 @@ BatSoxVal_ts AE_readBatSoxDatasFromEeprom(void)
     {
          .batInstantaneousCapacity = 0.0f,
          .batStates = BAT_NOT_INITIALIZED,
-         .batTotalCapacity = 4500,
+         .batTotalCapacity = 0,
          .cycle = 0.0f,
          .soc = 0.0f,
          .soh = 100.0f,

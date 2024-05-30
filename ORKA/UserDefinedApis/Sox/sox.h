@@ -15,6 +15,10 @@
 #define SOH_CALCULATE_PERIOD            (MAX_CELL_CAPACITY * soxInitVals.numberOfParallelCell / 2)      //if total capacity differense is bigger than 1000mA calculate SOH
 #define SYSTEM_TOTAL_CAPACITY           (MAX_CELL_CAPACITY * soxInitVals.numberOfParallelCell)
 
+//!<@refgroup DOD_LEVEL
+#define LOWER_DOD_LEVEL                 (0u)
+#define UPPER_DOD_LEVEL                 (1u)
+
 typedef enum BatState_e{
     BAT_NOT_INITIALIZED,                    //!!! do not change the order, 0.
     BAT_INITIALIZED_WITHOUT_CALIBRATION,    //!!! do not change the order, 2.
@@ -27,7 +31,6 @@ typedef enum BatState_e{
     BAT_CHARGING_MODE,
     BAT_DISCHARGING_MODE,
     BAT_IDLE_MODE,
-    BAT_NO_OPERATION
 }BatState_te;
 
 /**
@@ -35,11 +38,11 @@ typedef enum BatState_e{
  */
 typedef struct SoxInitTypeDef_s{
     uint32_t cellCapacityInmAh;             //capacity of one cell
-    uint16_t numberOfParallelCell;        //UNUSED TODO if givin total voltage instead of mean voltage, this parameter will be used
+    uint16_t numberOfParallelCell;          //used for the total capacity calculation
     uint16_t numberOfSerialCell;
     uint16_t numberOfLifeCycle;             //cell max cycle number or desired number
-    float cellLowerDocRatio;              //Doc = 1 - DOD between 0-100
-    float cellUpperDocRatio;              //Doc = 1 - DOD between 0-100
+    float cellLowerDocRatio;                //Doc = 1 - DOD between 0-100
+    float cellUpperDocRatio;                //Doc = 1 - DOD between 0-100
     float dodRatio;                         // dod ratio between 0-1
     float minDischargeVoltage;              // !!!calculated by program do not set
     float maxChargeVoltage;                 // !!!calculated by program do not set
@@ -58,7 +61,7 @@ typedef struct BatSoxVal_s{
     float soh;                             //!< ratio between 0-100
     float calibrationSoh;                  //!< (system calculated calibration capacity) / (4500.0f) used to set soh between 0-1
     float cycle;                           //!< cell life cycle counter
-    float batInstantaneousCapacity;        //!< TODO may be located in SoxInitTypeDef_ts structure
+    float batInstantaneousCapacity;        //!<
     float previousCapacity;                //!< use to calculate the soh calculation period
     float sumOfCapacityChange;             //!< sum the changes changes ratio to calculate soh
     float batTotalCapacity;                //!< system calculated capacity by fully charging and discharging or fully discharging or charging

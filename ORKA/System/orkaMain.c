@@ -80,7 +80,7 @@ static void orkaSoxInit()
     soxInit.numberOfParallelCell    = 6u;         //UNUSED variable
     soxInit.numberOfSerialCell      = 1u;
     soxInit.numberOfLifeCycle       = 600u;         //             __________________________________
-    soxInit.cellLowerDocRatio       = 5u;           //system DOD  | Lower | System Operation | Upper |
+    soxInit.cellLowerDocRatio       = 5u;           //system DOD  | Lower | System Operation | Upper | DOC = 1-DOD
     soxInit.cellUpperDocRatio       = 5u;           //            |__DOC__|______DOD_________|__DOC__|
 
     AE_soxInit(&soxInit);
